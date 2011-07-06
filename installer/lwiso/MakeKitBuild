@@ -1,0 +1,64 @@
+MODULES="sfx dmg"
+
+make()
+{
+    case "$MK_HOST_OS" in
+        linux)
+            for fmt in deb rpm
+            do
+                mk_${fmt}_enabled && sfx_generic "$fmt"
+            done
+            ;;
+        freebsd)
+            mk_freebsd_enabled && sfx_generic "freebsd"
+            ;;
+        solaris)
+            mk_pkg_enabled && sfx_generic "pkg" "response"
+            ;;
+        aix)
+            mk_lpp_enabled && sfx_generic "lpp"
+            ;;
+        hpux)
+            mk_depot_enabled && sfx_generic "depot"
+            ;;
+        darwin)
+            mk_macpkg_enabled && lw_dmg \
+                DMG="likewise-open-${LW_VERSION}" \
+                VOLNAME="LikewiseOpen" \
+                TEMPLATE="dmg-template.tar.bz2" \
+                PACKAGES="likewise-open"
+            ;;
+    esac
+}
+
+sfx_generic()
+{
+    # $1 = package format
+    # $2 = extra files to include
+
+    GUI_PACKAGE=""
+
+    if [ "$DJ_GUI_INTERFACE" = "gtk" ]
+    then
+        GUI_PACKAGE="likewise-open-gui"
+    fi
+
+    lw_sfx \
+        SFX="LikewiseOpen-${LW_VERSION}" \
+        FILES="COPYING README EULA LICENSES $2" \
+        FORMAT="$1" \
+        PACKAGES="likewise-open likewise-open-upgrade $GUI_PACKAGE" \
+        UPGRADE="likewise-open-upgrade" \
+        OBSOLETE="likewise-base likewise-base-32bit likewise-domainjoin \
+                  likewise-domainjoin-gui likewise-eventlog likewise-krb5 \
+                  likewise-lac likewise-libxml2 likewise-lsass likewise-lsass-32bit \
+                  likewise-lwadutil likewise-lwconfig likewise-lwio likewise-lwmgmt \
+                  likewise-lwnetapi likewise-lwreg likewise-lwreg-32bit \
+                  likewise-lwtools likewise-lwupgrade likewise-mod-auth-kerb \
+                  likewise-netlogon likewise-openldap likewise-passwd \
+                  likewise-pstore likewise-reskit likewise-rpc likewise-sqlite \
+                  likewise-srvsvc likewise-reapsysl likewise-samba-interop \
+                  likewise-smbclient" \
+        BASE="likewise-open" \
+        GUI="$GUI_PACKAGE"
+}

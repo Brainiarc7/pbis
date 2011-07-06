@@ -1,0 +1,8 @@
+make()
+{
+    mk_stage \
+        DESTDIR="${LW_CONFIGDIR}" \
+        lsassd.reg \
+        privileges.reg \
+        accounts.reg
+}
