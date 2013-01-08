@@ -38,9 +38,15 @@
 		<key>positionOfDivider</key>
 		<real>406</real>
 		<key>savedFrame</key>
+<<<<<<< HEAD
 		<string>47 345 1109 710 0 0 1600 1178 </string>
 		<key>selectedTabView</key>
 		<string>event log</string>
+=======
+		<string>-1749 -141 1109 710 -2560 -298 2560 1600 </string>
+		<key>selectedTabView</key>
+		<string>result</string>
+>>>>>>> e6686db... added the AppleScript version of the domain join GUI
 	</dict>
 </dict>
 </plist>
